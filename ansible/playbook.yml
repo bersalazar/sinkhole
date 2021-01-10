@@ -1,0 +1,22 @@
+- name: Deploy new blocked domains file
+  hosts: all
+  tasks:
+    - name: Create a backup copy of old blocked domains file
+      become: yes
+      copy:
+        remote_src: yes
+        src: /etc/named/named.conf.blockeddomains
+        dest: /etc/named/named.conf.blockeddomains.old
+
+    - name: Copy the blocked domains file
+      become: yes
+      copy:
+        src: ../named.conf.blockeddomains
+        dest: /etc/named/named.conf.blockeddomains
+        mode: '644'
+
+    - name: Restart named
+      become: yes
+      service:
+        name: named
+        state: restarted
