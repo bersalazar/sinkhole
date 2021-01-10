@@ -17,8 +17,18 @@ def parse_blocked_domain(line):
     line = line.replace("\n", "")
 
     # trim anything beyond the domain name
-    if " " in line:
-        line = line[0:line.index(" ")]
+    for character in [' ', '\t']:
+        if character in line:
+            line = line[0:line.index(character)]
+
+    # remove unwanted characters
+    for character in ['#', '@']:
+        if character in line:
+            line = line.replace(character, ' ')
+
+    # strip whitespaces from edges
+    line = line.strip()
+
     return apply_bind_format(line)
 
 
@@ -37,7 +47,6 @@ def process_blocked_domains_list(data):
             continue
 
         entry = parse_blocked_domain(line)
-        print(f'Appended {entry}')
         new_lines.append(entry)
     return new_lines
 
@@ -54,13 +63,16 @@ blocked_domains_file = 'named.conf.blockeddomains'
 url = 'https://www.someonewhocares.org/hosts/hosts'
 # url = 'http://www.malwaredomainlist.com/hostslist/hosts.txt'
 
+print(f'Downloading domain list from {url}')
 r = requests.get(url, stream=True)
-with open('hosts', 'wb') as hosts:
+
+with open('hosts', 'wb') as domain_list:
+    print('Writing domain list to local file')
     for chunk in r.iter_content(chunk_size=80):
         if chunk:
-            hosts.write(chunk)
+            domain_list.write(chunk)
 
-with open('hosts', 'r') as raw:
+with open('hosts', 'r', encoding='utf-8-sig') as raw:
     data = raw.read().splitlines(True)
 
 blocked_domains = process_blocked_domains_list(data) + process_additional_domains_list(additional_domains)
