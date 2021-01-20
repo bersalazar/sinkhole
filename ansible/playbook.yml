@@ -1,5 +1,5 @@
 - name: Deploy new blocked domains file
-  hosts: all
+  hosts: sterner
   tasks:
     - name: Create a backup copy of old blocked domains file
       become: yes
