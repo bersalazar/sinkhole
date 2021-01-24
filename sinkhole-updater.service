@@ -1,0 +1,7 @@
+[Unit]
+Description=Sinkhole Updater Service
+
+[Service]
+WorkingDirectory=/opt/sinkhole-updater
+ExecStart=/usr/bin/python3 /opt/sinkhole-updater/generator.py
+Restart=on-failure

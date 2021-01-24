@@ -22,6 +22,7 @@ FORMAT = '%(asctime)s: %(message)s'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger()
 
+
 def apply_bind_format(line):
     prefix = 'zone "'
     suffix = '" {type master; file "named.empty";};'
