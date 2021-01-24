@@ -1,3 +1,8 @@
 additional_domains.py
 __pycache__
 named.conf.blockeddomains
+
+venv/
+.*
+
+!.gitignore
