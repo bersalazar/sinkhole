@@ -2,6 +2,7 @@ additional_domains
 __pycache__
 named.conf.blockeddomains
 
+deployment/
 venv/
 .*
 

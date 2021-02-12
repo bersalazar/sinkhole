@@ -186,6 +186,9 @@ def update_blocked_domains():
         shutil.copy(source, destination)
         logger.debug(f"Updated blocked domains file at {destination}")
 
+        shutil.copy(config['fresh_blacklist_file'], config['stale_blacklist_file'])
+        logger.debug("Replaced .sbl with .fbl files")
+
         os.system("rndc reload")
         logger.debug("Reloaded bind process using rndc")
     except Exception as ex:
